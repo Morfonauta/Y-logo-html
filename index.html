@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Interactive Particle Universe - Y Formation</title>
+<title>Learning Ecosystem</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
     body {
@@ -19,7 +19,7 @@
     #particleCanvas {
         border: 1px solid #333;
         cursor: grab;
-        max-width: 100%;
+        max-width: 120%;
         touch-action: none;
     }
     .controls {
@@ -107,14 +107,14 @@
 </style>
 </head><body>
 
-<h1>✨ Interactive Particle Universe ✨</h1>
+<h1>Learning Ecosystem</h1>
 <canvas id="particleCanvas"></canvas>
 <div id="errorMessage"></div>
 
 <div class="controls">
     <div class="control-group">
         <label for="particleColor">Cloud Color:</label>
-        <input type="color" id="particleColor" value="#00ffff">
+        <input type="color" id="particleColor" value="#7008bf">
     </div>
     <div class="control-group">
         <label for="backgroundColor">Background:</label>
@@ -136,7 +136,7 @@
     </div>
     <div class="control-group">
         <label for="particleSize">Max Size (Cloud):</label>
-        <input type="range" id="particleSize" min="1" max="8" value="2.5">
+        <input type="range" id="particleSize" min="2" max="15" value="1.5">
     </div>
     <div class="control-group">
         <label for="particleSpeed">Speed (Cloud):</label>
@@ -155,7 +155,7 @@
     </div>
     <div class="control-group">
         <label for="maxDistance">Line Distance:</label>
-        <input type="range" id="maxDistance" min="10" max="150" value="35">
+        <input type="range" id="maxDistance" min="3" max="250" value="35">
     </div>
     <button id="resetButton">Reset Cloud</button>
     <button id="formTextButton">Form Y</button>
@@ -183,15 +183,15 @@
         particleCount: 30,
         particleSize: 2.5, particleSpeed: 0.8,
         connectionLines: 'on', lineColor: '#FFFFFF', maxDistance: 35,
-        defaultGlowBlur: 5, hoverGlowBlur: 15, glowInteractionRadius: 25, glowOpacityFactor: 0.5,
-        formationEasing: 0.025,
+        defaultGlowBlur: 5, hoverGlowBlur: 25, glowInteractionRadius: 35, glowOpacityFactor: 0.5,
+        formationEasing: 0.5,
         shapeGlowColor: '#00E0FF',
-        shapeGlowBlur: 20,
+        shapeGlowBlur: 30,
         shapeGlowOpacity: 0.6,
         textPointSamplingStep: 2,
         textFontFamily: "Helvetica, Arial, sans-serif",
         textToShow: "Y",
-        E55TextToShow: "E55",
+        🤖TextToShow: "🤖",
         availableShapes: ['circle', 'square', 'hexagon', 'infinity']
     };
     let currentSettings = { ...defaultSettings };
@@ -273,8 +273,8 @@
             canvas.width = newWidth; canvas.height = newHeight;
             if (animationMode === 'formingText' || animationMode === 'textDisplayed') {
                 assignTargetPoints(processTextToPoints(currentSettings.textToShow, particleColorInput.value), 'formingText');
-            } else if (animationMode === 'formingE55' || animationMode === 'E55Displayed') {
-                assignTargetPoints(processTextToPoints(currentSettings.E55TextToShow, particleColorInput.value), 'formingE55');
+            } else if (animationMode === 'forming🤖' || animationMode === '🤖Displayed') {
+                assignTargetPoints(processTextToPoints(currentSettings.🤖TextToShow, particleColorInput.value), 'forming🤖');
             } else { init(true); }
         } else if (particlesArray.length === 0 && currentSettings.particleCount > 0 && animationMode === 'cloud') {
             init(true);
@@ -295,7 +295,7 @@
 
         let fS_factor_width, fS_factor_height;
 
-        if (textToDraw === currentSettings.E55TextToShow) {
+        if (textToDraw === currentSettings.🤖TextToShow) {
             fS_factor_width = 0.8;
             fS_factor_height = 0.6;
         } else if (textToDraw === "Y") {
@@ -382,9 +382,9 @@
         let allAtTarget = true;
         if(particlesArray.length>0){
             for(let i=0;i<particlesArray.length;i++){particlesArray[i].update();particlesArray[i].draw();
-                if((animationMode==='formingText' || animationMode === 'formingE55') && !particlesArray[i].isAtTarget && particlesArray[i].targetX > -500){allAtTarget=false;}}}
+                if((animationMode==='formingText' || animationMode === 'forming🤖') && !particlesArray[i].isAtTarget && particlesArray[i].targetX > -500){allAtTarget=false;}}}
         if(animationMode==='formingText' && allAtTarget && currentTargetPoints.length>0){animationMode='textDisplayed';}
-        else if(animationMode==='formingE55' && allAtTarget && currentTargetPoints.length > 0) { animationMode = 'E55Displayed';}
+        else if(animationMode==='forming🤖' && allAtTarget && currentTargetPoints.length > 0) { animationMode = '🤖Displayed';}
         if(currentSettings.connectionLines==='on')connectParticles();
         animationFrameId=requestAnimationFrame(animateWithMouse);
     }
@@ -403,7 +403,7 @@
                     let lnHex = currentSettings.lineColor, glHex = currentSettings.lineColor;
                     let glBlur = currentSettings.defaultGlowBlur, glOp = op * currentSettings.glowOpacityFactor;
 
-                    if (animationMode.includes('Text') || animationMode.includes('E55')) {
+                    if (animationMode.includes('Text') || animationMode.includes('🤖')) {
                         lnHex = particlesArray[a].color || particleColorInput.value;
                         glHex = currentSettings.shapeGlowColor;
                         glBlur = currentSettings.shapeGlowBlur;
@@ -443,8 +443,8 @@
         } else { // Se non è reset o cloud mode, ma cambiano colori o linee, non serve rifare init() ma solo ridisegnare
              if (animationMode === 'formingText' || animationMode === 'textDisplayed') {
                 assignTargetPoints(processTextToPoints(currentSettings.textToShow, particleColorInput.value), animationMode); // Mantiene la modalità testo
-            } else if (animationMode === 'formingE55' || animationMode === 'E55Displayed') {
-                assignTargetPoints(processTextToPoints(currentSettings.E55TextToShow, particleColorInput.value), animationMode); // Mantiene la modalità E55
+            } else if (animationMode === 'forming🤖' || animationMode === '🤖Displayed') {
+                assignTargetPoints(processTextToPoints(currentSettings.🤖TextToShow, particleColorInput.value), animationMode); // Mantiene la modalità 🤖
             }
         }
     }
@@ -487,11 +487,11 @@
         const tapLength = currentTime - lastTapTime;
         if (tapLength < doubleTapTimeout && tapLength > 0) {
             event.preventDefault();
-            console.log("Double tap on canvas detected for E55.");
-            if (animationMode === 'cloud' || animationMode === 'textDisplayed' || animationMode === 'E55Displayed') {
+            console.log("Double tap on canvas detected for 🤖.");
+            if (animationMode === 'cloud' || animationMode === 'textDisplayed' || animationMode === '🤖Displayed') {
                 const capturedColor = particleColorInput.value;
-                assignTargetPoints(processTextToPoints(currentSettings.E55TextToShow, capturedColor), 'formingE55');
-            } else if (animationMode === 'formingE55') {
+                assignTargetPoints(processTextToPoints(currentSettings.🤖TextToShow, capturedColor), 'forming🤖');
+            } else if (animationMode === 'forming🤖') {
                 updateSettingsAndRestart(true);
             }
             lastTapTime = 0;
@@ -504,11 +504,11 @@
         const currentTime = new Date().getTime();
         const clickLength = currentTime - lastClickTime;
         if (clickLength < doubleTapTimeout && clickLength > 0) {
-            console.log("Double click on canvas detected for E55.");
-            if (animationMode === 'cloud' || animationMode === 'textDisplayed' || animationMode === 'E55Displayed') {
+            console.log("Double click on canvas detected for 🤖.");
+            if (animationMode === 'cloud' || animationMode === 'textDisplayed' || animationMode === '🤖Displayed') {
                 const capturedColor = particleColorInput.value;
-                assignTargetPoints(processTextToPoints(currentSettings.E55TextToShow, capturedColor), 'formingE55');
-            } else if (animationMode === 'formingE55') {
+                assignTargetPoints(processTextToPoints(currentSettings.🤖TextToShow, capturedColor), 'forming🤖');
+            } else if (animationMode === 'forming🤖') {
                 updateSettingsAndRestart(true);
             }
             lastClickTime = 0;
